@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ページが見つかりません | 東亜先端研究株式会社</title>
+  <meta name="description" content="指定されたページは見つかりませんでした。" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* 404 専用（表向き・最小） */
+    .notfound {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+    }
+    .notfound .box {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+    }
+    .notfound h2 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .notfound p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.7;
+    }
+    .notfound .links {
+      margin-top: 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .notfound a {
+      font-size: 14px;
+      text-decoration: none;
+      border-bottom: 1px solid #9ca3af;
+      color: #111827;
+    }
+    .notfound a:hover {
+      border-color: #111827;
+    }
+
+    /* 微細な違和感（通常閲覧では認識困難） */
+    .trace {
+      position: fixed;
+      bottom: 10px;
+      right: 12px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      opacity: 0.6;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">Toa Advanced Research Inc.</h1>
+      <nav class="nav">
+        <a href="company.html">企業情報</a>
+        <a href="services.html">事業内容</a>
+        <a href="research.html">研究姿勢</a>
+        <a href="contact.html">お問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="notfound">
+      <div class="box">
+        <h2>404 Not Found</h2>
+        <p>
+          ご指定のページは存在しないか、移動された可能性があります。
+          URLをご確認のうえ、下記リンクより目的のページへお進みください。
+        </p>
+        <div class="links">
+          <a href="index.html">トップページ</a>
+          <a href="company.html">企業情報</a>
+          <a href="services.html">事業内容</a>
+          <a href="research.html">研究姿勢</a>
+          <a href="contact.html">お問い合わせ</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; Toa Advanced Research Inc. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 痕跡（表では意味を持たない） -->
+  <div class="trace">REQ:404 / STATUS:RESOLVED</div>
+</body>
+</html>

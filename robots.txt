@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /internal/
+Disallow: /logs/
+Disallow: /archive/
+Disallow: /tmp/
+
+Allow: /
+
+# Crawl-delay is intentionally unspecified
+# Access to restricted paths is logged
+
+Sitemap: /sitemap.xml
