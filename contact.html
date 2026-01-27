@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ | 東亜先端研究株式会社</title>
+  <meta name="description" content="東亜先端研究株式会社へのお問い合わせページです。" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">Toa Advanced Research Inc.</h1>
+      <nav class="nav">
+        <a href="index.html#about">企業情報</a>
+        <a href="index.html#services">事業内容</a>
+        <a href="index.html#research">研究姿勢</a>
+        <a href="contact.html">お問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h3>お問い合わせ</h3>
+        <p>
+          当社業務に関するお問い合わせは、下記フォームよりご連絡ください。
+          内容を確認のうえ、担当者よりご返信いたします。
+        </p>
+
+        <form id="contactForm" class="contact-form">
+          
+
+          <div class="form-group">
+            <label>お問い合わせ内容</label>
+            <textarea id="message" rows="6" required></textarea>
+          </div>
+
+          <button type="submit">送信</button>
+        </form>
+
+        <p class="note">
+          ※ 研究内容の詳細、契約条件等についてはお答えできない場合があります。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; Toa Advanced Research Inc. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ===== 裏ページ遷移トリガー（分割条件） =====
+    const KEYWORD_PARTS = ["shore", "variance"]; 
+
+    const form = document.getElementById("contactForm");
+    const messageEl = document.getElementById("message");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const text = messageEl.value.toLowerCase();
+      const matched = KEYWORD_PARTS.every(part => text.includes(part));
+
+      if (matched) {
+        triggerAnomaly().then(() => {
+          window.location.href = "/internal/index.html";
+        });
+      } else {
+        alert("お問い合わせを受け付けました。\n※ 自動返信メールは送信されません。");
+        this.reset();
+      }
+    });
+
+    function triggerAnomaly() {
+      return new Promise(resolve => {
+        const overlay = document.createElement("div");
+        overlay.className = "anomaly-overlay";
+        overlay.innerHTML = `
+          <div class="anomaly-box">
+            <p>VERIFYING REQUEST...</p>
+            <p class="small">ACCESS ROUTE CHECK</p>
+          </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        setTimeout(() => {
+          overlay.classList.add("visible");
+        }, 50);
+
+        setTimeout(() => {
+          overlay.classList.remove("visible");
+        }, 900);
+
+        setTimeout(() => {
+          overlay.remove();
+          resolve();
+        }, 1200);
+      });
+    }
+  </script>
+
+  <style>
+    /* フォーム専用（表向き用に最小限） */
+    .contact-form {
+      margin-top: 32px;
+      max-width: 640px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 12px 28px;
+      border: 1px solid #374151;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #f3f4f6;
+    }
+  </style>
+</body>
+</html>
