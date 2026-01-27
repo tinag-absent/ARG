@@ -38,7 +38,7 @@
             <textarea id="message" rows="6" required></textarea>
           </div>
 
-          <button type="submit" style="color: black; border-radius:3px"}">送信</button>
+          <button type="submit"}">送信</button>
         </form>
 
         <p class="note">
@@ -56,7 +56,7 @@
 
   <script>
     // ===== 裏ページ遷移トリガー（分割条件） =====
-    const KEYWORD_PARTS = ["shore", "variance"]; 
+    const KEYWORD_PARTS = ["海蝕機関", "子布結志文"]; 
 
     const form = document.getElementById("contactForm");
     const messageEl = document.getElementById("message");
@@ -69,10 +69,10 @@
 
       if (matched) {
         triggerAnomaly().then(() => {
-          window.location.href = "/internal/index.html";
+          window.location.href = "https://fukurou-dev.github.io/AI/index.html";
         });
       } else {
-        alert("お問い合わせを受け付けました。\n※ 自動返信メールは送信されません。");
+        alert("ただいまお問い合わせすることができません。\n※ 自動返信メールは送信されません。");
         this.reset();
       }
     });
@@ -138,6 +138,8 @@
       background: #ffffff;
       cursor: pointer;
       font-size: 14px;
+      color:black;
+      border-radius:3px;
     }
 
     button:hover {
