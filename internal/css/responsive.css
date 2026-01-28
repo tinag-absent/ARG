@@ -1,0 +1,30 @@
+@media (max-width:700px){
+  .menu-toggle{
+    display:block;
+    margin-left:auto;
+  }
+
+  .nav-wrapper{
+    position:fixed;
+    inset:48px 0 auto 0;
+    background:rgba(3,7,18,0.98);
+    backdrop-filter:blur(8px);
+    padding:0.75rem 1rem;
+    border-bottom:1px solid #111827;
+    display:none;
+  }
+
+  .nav-wrapper.open{
+    display:block;
+  }
+
+  nav ul{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0.6rem;
+  }
+
+  .search-area{
+    margin-top:0.6rem;
+  }
+}

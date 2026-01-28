@@ -1,0 +1,128 @@
+/* =========================
+   Loading Screen Base
+========================= */
+
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #0b0e11;
+  color: #cfd3d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: 'DotGothic16', monospace;
+  overflow: hidden;
+}
+
+/* フェードアウト */
+#loading-screen.fade-out {
+  animation: fadeOut 0.6s ease forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* =========================
+   Loading Text
+========================= */
+
+#loading-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  text-shadow:
+    0 0 2px rgba(180,200,255,0.15),
+    0 0 6px rgba(180,200,255,0.08);
+}
+
+/* =========================
+   Percent Display
+========================= */
+
+#loading-percent {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  font-size: 3.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+  text-shadow:
+    1px 0 rgba(120,160,255,0.25),
+   -1px 0 rgba(255,120,120,0.15),
+    0 0 6px rgba(180,200,255,0.15);
+  animation: percent-flicker 2.5s infinite;
+}
+
+@keyframes percent-flicker {
+  0%, 100% { opacity: 0.9; }
+  48% { opacity: 0.75; }
+  50% { opacity: 1; }
+  52% { opacity: 0.8; }
+}
+
+/* =========================
+   CRT Scanline
+========================= */
+
+#loading-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0) 4px
+  );
+  pointer-events: none;
+  animation: scanline 6s linear infinite;
+}
+
+@keyframes scanline {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* =========================
+   CRT Noise
+========================= */
+
+#loading-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>\
+<filter id='n'>\
+<feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/>\
+</filter>\
+<rect width='100%' height='100%' filter='url(%23n)' opacity='0.04'/>\
+</svg>");
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: noise 0.4s steps(2) infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(-1px,1px); }
+  50% { transform: translate(1px,-1px); }
+  75% { transform: translate(-1px,-1px); }
+  100% { transform: translate(0,0); }
+}
+
+/* =========================
+   1-Frame Horizontal Glitch
+========================= */
+
+.glitch-shift {
+  transform: translateX(var(--shift-x));
+}

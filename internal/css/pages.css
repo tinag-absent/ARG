@@ -1,0 +1,31 @@
+.hero{
+  position:relative;
+  height:60vh;
+  min-height:320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-bottom:1px solid #1f2937;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:url("https://i.ibb.co/RTHv5Wcy/IMG-1127.jpg") center/cover no-repeat;
+  filter:brightness(0.4) contrast(1.2);
+  animation:hero-glitch 6s infinite alternate;
+}
+
+@keyframes hero-glitch{
+  0%{transform:translate(0,0);}
+  50%{transform:translate(-1px,1px);}
+  100%{transform:translate(0,0);}
+}
+
+/* ã¢ã¯ã»ã·ããªãã£éæ® */
+@media (prefers-reduced-motion: reduce){
+  .hero-bg{
+    animation:none;
+  }
+}

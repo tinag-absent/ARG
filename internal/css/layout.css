@@ -1,0 +1,33 @@
+header{
+position:sticky;
+top:0;
+z-index:20;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0.6rem 1.25rem;
+background:rgba(3,7,18,0.95);
+backdrop-filter:blur(6px);
+border-bottom:1px solid #1f2937;
+font-family:"DotGothic16",sans-serif;
+}
+
+.logo a{
+  font-size:1.1rem;
+  letter-spacing:0.12em;
+  white-space:nowrap;
+}
+
+main{
+max-width:960px;
+margin:0 auto;
+padding:1.5rem 1.25rem 3rem;
+}
+
+footer{
+border-top:1px solid #1f2937;
+padding:1rem 1.25rem;
+font-size:0.75rem;
+color:var(--text-muted);
+background:#020617;
+}
