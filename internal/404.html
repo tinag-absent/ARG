@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 NOT FOUND | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+  <style>
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .error-code {
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 6rem;
+      color: #ff4d4d;
+      text-shadow: 0 0 20px rgba(255, 77, 77, 0.5);
+      margin-bottom: 1rem;
+      animation: glitch 2s infinite linear alternate-reverse;
+    }
+    .error-message {
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .error-desc {
+      max-width: 500px;
+      line-height: 1.8;
+      color: #888;
+      margin-bottom: 3rem;
+    }
+    @keyframes glitch {
+      0% { transform: skew(0deg); }
+      20% { transform: skew(-2deg); }
+      40% { transform: skew(2deg); }
+      60% { transform: skew(-1deg); }
+      80% { transform: skew(1deg); }
+      100% { transform: skew(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>404 NOT FOUND</li>
+    </ul>
+  </nav>
+
+  <main class="error-container">
+    <div class="error-code">404</div>
+    <h1 class="error-message">指定された座標は存在しません</h1>
+    <p class="error-desc">
+      アクセスしようとしたページは、階底次元に飲み込まれたか、最初から存在しない座標です。<br>
+      あなたのアクセス履歴は「外事部門」によって記録されました。
+    </p>
+    <div class="cta-row">
+      <a href="index.html" class="cta-btn">ポータルへ帰還する</a>
+    </div>
+  </main>
+
+  <footer></footer>
+
+  <script type="module">
+    import { initMenu } from './js/menu.js';
+    import { initSearch } from './js/search.js';
+    import { loadComponents } from './js/components.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadComponents();
+      
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+      const accessLevel = sessionStorage.getItem('accessLevel') || 0;
+      const userName = sessionStorage.getItem('userName') || 'GUEST';
+
+      if (isLoggedIn) {
+        const levelDisplayContainer = document.getElementById('accessLevelContainer');
+        if (levelDisplayContainer) {
+          levelDisplayContainer.className = 'access-level-display';
+          levelDisplayContainer.innerHTML = `LEVEL: ${accessLevel} [${userName}]`;
+          levelDisplayContainer.style.fontSize = '0.7rem';
+          levelDisplayContainer.style.color = 'var(--accent)';
+          levelDisplayContainer.style.fontFamily = 'DotGothic16, sans-serif';
+        }
+        
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.style.display = 'inline-block';
+          logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+          });
+        }
+      }
+
+      initMenu();
+      initSearch();
+    });
+  </script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

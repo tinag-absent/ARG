@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>内部ログイン | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+    <link rel="stylesheet" href="./css/load.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 20px var(--accent-alpha);
+    }
+    .login-title {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      background: #000;
+      border: 1px solid #333;
+      color: var(--text-main);
+    }
+    .form-group input:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-family: 'DotGothic16', sans-serif;
+      font-weight: bold;
+    }
+    .login-btn:hover {
+      background: #fff;
+    }
+    .error-msg {
+      color: #ff4d4d;
+      font-size: 0.8rem;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<!-- =========================
+     Loading Screen
+========================= -->
+<div id="loading-screen">
+  <div id="loading-percent">0%</div>
+  <pre id="loading-text"></pre>
+</div>
+
+<!-- =========================
+     Main Application
+========================= -->
+<div id="app">
+  <header></header>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>ログイン</li>
+    </ul>
+  </nav>
+  <main class="login-container">
+    <h1 class="login-title">LOGIN SYSTEM</h1>
+    <div class="form-group">
+      <label for="userId">海蝕員ID</label>
+      <input type="text" id="userId" placeholder="IDを入力してください">
+    </div>
+    <div class="form-group">
+      <label for="password">パスコード</label>
+      <input type="password" id="password" placeholder="パスワードを入力してください">
+    </div>
+    <button id="loginBtn" class="login-btn">認証開始</button>
+    <div id="errorMsg" class="error-msg">認証に失敗しました。アクセス権限を確認してください。</div>
+  </div>
+
+  <footer></footer>
+
+  <script>
+    const credentials = [
+      { id: '研修生', pass: 'level1', level: 1 },
+      { id: '空蝉', pass: 'sorazemi', level: 2 },
+      { id: '収束員', pass: 'level3', level: 3 },
+      { id: '指揮官', pass: 'level4', level: 4 },
+      { id: '機関長', pass: 'level5', level: 5 }
+    ];
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const id = document.getElementById('userId').value;
+      const pass = document.getElementById('password').value;
+      const error = document.getElementById('errorMsg');
+
+      const user = credentials.find(u => u.id === id && u.pass === pass);
+
+      if (user) {
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('accessLevel', user.level);
+        sessionStorage.setItem('userName', user.id);
+        window.location.href = 'index.html';
+      } else {
+        error.style.display = 'block';
+      }
+    });
+
+    // Enterキーでもログイン
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+  </script>
+  <script type="module" src="./js/main.js"></script>
+    <!-- 既存のサイト内容 -->
+</div>
+
+<script src="./js/load.js"></script>
+
+</body>
+</html>

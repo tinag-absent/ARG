@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="このサイトは海蝕員専用サイトです。部外者は直ちにこのサイトを離れてください。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解奇日記</title>
+
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+
+  <!-- ===== 外部CSS ===== -->
+ <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+
+  </head>
+
+<body id="top">
+
+
+
+<header></header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ul>
+    <li>ポータル / TOP</li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">内部機密 / INTERNAL USE ONLY</div>
+    <h1 class="hero-title">海蝕機関に関わるな</h1>
+    <p class="hero-sub">
+      本ポータルは、日本国内における海蝕現象の監視・収束に従事する海蝕員のための内部サイトです。
+      部外者は直ちに接続を終了してください。
+    </p>
+  </div>
+</div>
+
+<main>
+  <!-- 機関概要 -->
+  <section id="about">
+    <h2 class="section-title">海蝕機関とは</h2>
+    <div class="card">
+      <p>
+        海蝕機関は、日本国内で発生する「海蝕現象」の観測・記録・収束を任務とする非公開組織です。
+    公的機関の表向きの記録には一切残されません。
+      </p> <p class="text-muted" style="margin-top:0.4rem;">
+        主な任務: 海蝕現象の早期検知 / 現場封鎖 / 収束作業 / 証拠隠蔽 / 住民記憶処理（必要時）。
+      </p>
+      <div class="cta-row">
+        <a href="about.html" class="cta-btn cta-btn--accent">海蝕現象とは</a>
+        <a href="#log" class="cta-btn">最新の日報を読む</a>
+      </div>
+    </div>
+  </section>
+
+    
+
+  <!-- 日報ログ -->
+  <section id="log">
+    <h2 class="section-title">日報ログ</h2>
+    <div class="card">
+      <p> 日付を指定して過去の海蝕現象収束記録を検索できます。
+        一部の高危険度事案は権限レベルにより閲覧制限がかかっています。 </p>
+      <p class="text-muted"> 例: 「2023-11-02」「2024-08-13-港湾部事案」など。
+        特定のキーワードでのみ出現する記録が含まれている可能性があります。 </p>
+    </div>
+
+    <!-- 検索結果モーダル -->
+    <div id="searchModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>検索結果</h3>
+          <button id="closeModal" class="close-btn">&times;</button>
+        </div>
+        <div id="modalResults" class="modal-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 部門 -->
+  <section id="departments">
+    <h2 class="section-title">機関部門一覧</h2>
+        <div class="dept-grid">
+      <article class="dept-card">
+        <div class="dept-tag">Division-01</div>
+        <h3 class="dept-name">収束部門</h3>
+        <p class="dept-meta">
+          主任務: 現場出動 / 海蝕現象の直接収束 / モジュール運用。 想定脅威度: 中〜極高。
+        </p>
+        <p class="text-muted">
+          海蝕現象の前線に立つ部門です。モジュールと呼ばれる収束装置を携行し、現場での即応処置を行います。
+        </p>
+        <a href="division/convergence.html" class="dept-link">部門詳細</a>
+      </article>
+
+      <article class="dept-card">
+        <div class="dept-tag">Division-02</div>
+        <h3 class="dept-name">支援部門</h3>
+        <p class="dept-meta">
+          主任務: 収束部門の後方支援 / 運用管制 / 医療・心理ケア。 想定脅威度: 低〜中。
+        </p>
+        <p class="text-muted">
+          現地オペレーションの調整やデータ解析、海蝕員の帰還後ケアを担当します。状況に応じて現場への同行支援も実施されます。
+        </p>
+        <a href="division/support.html" class="dept-link">部門詳細</a>
+      </article>
+
+      <article class="dept-card">
+        <div class="dept-tag">Division-03</div>
+        <h3 class="dept-name">工作部門</h3>
+        <p class="dept-meta">
+          主任務: 海蝕実体の解析 / モジュール開発 / 機関設備の新造。 想定脅威度: 変動。
+        </p>
+        <p class="text-muted">
+          回収された海蝕実体や残滓を検証し、その特性をモジュールへ転用します。部室・消耗品・小物類の製作も兼任します。
+        </p>
+        <a href="division/fabrication.html" class="dept-link">部門詳細</a>
+      </article>
+
+      <article class="dept-card">
+        <div class="dept-tag">Division-04</div>
+        <h3 class="dept-name">外事部門</h3>
+        <p class="dept-meta">
+          主任務: 外界および階底次元との交渉 / 情報工作 / 隠蔽・広報対応。 想定脅威度: 中。
+        </p>
+        <p class="text-muted">
+          行政・報道機関・階底次元住民との折衝やメディア操作を行います。スカウトや経理に類似した業務を担当することもあります。
+        </p>
+        <a href="division/external.html" class="dept-link">部門詳細</a>
+      </article>
+
+      <article class="dept-card">
+        <div class="dept-tag">Division-05</div>
+        <h3 class="dept-name">港湾部</h3>
+        <p class="dept-meta">
+          主任務: 海域監視 / 埠頭封鎖 / 境界流入防止。 想定脅威度: 中〜高。
+        </p>
+        <p class="text-muted">
+          境界の入り口となる土地や施設を24時間監視し、<ruby>不根<rt>ふね</rt></ruby>や海蝕実体の侵入を阻止します。
+        </p>
+        <a href="division/port.html" class="dept-link">部門詳細</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- 規約 -->
+  <section id="protocol">
+    <h2 class="section-title">機密規約抜粋</h2>
+    <div class="card">
+      <p>
+        海蝕現象に関する一切の情報は、機関外部への口頭・文書・電子的送信を禁じられています。
+        違反した場合、記憶処理および階底次元送致を含む懲戒が行われます。
+      </p> <p class="text-muted">
+        本セクションは一般海蝕員向けの抜粋版です。完全版規約は権限レベル3以上の海蝕員のみ閲覧可能です。
+      </p>
+      <div class="cta-row" style="margin-top: 1.5rem;">
+        <a href="protocol.html" id="classifiedLink" class="cta-btn" style="border-color: #ff4d4d; color: #ff4d4d;">機密規約完全版を閲覧（要権限）</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer></footer>
+
+<!-- ===== 外部JavaScript ===== -->
+<script type="module" src="./js/main.js"></script>  <!-- 既存のサイト内容 -->
+
+</body>
+</html>

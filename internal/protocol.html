@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>機密規約 | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+  <style>
+    .classified-hero {
+      padding: 5rem 2rem;
+      background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url('https://i.ibb.co/LzdS8mY/hero-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      border-bottom: 2px solid #ff4d4d;
+      text-align: center;
+    }
+    .classified-content {
+      max-width: 800px;
+      margin: -3rem auto 4rem;
+      position: relative;
+      z-index: 10;
+    }
+    .protocol-card {
+      background: #0a0a0a;
+      border: 1px solid #ff4d4d;
+      padding: 3rem;
+      box-shadow: 0 0 50px rgba(255, 77, 77, 0.2);
+    }
+    .classified-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: #ff4d4d;
+      color: #000;
+      font-family: 'DotGothic16', sans-serif;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .secret-section {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255, 77, 77, 0.2);
+      padding-bottom: 1.5rem;
+    }
+    .secret-title {
+      color: #ff4d4d;
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .redaction {
+      background: #ff4d4d;
+      color: #ff4d4d;
+      cursor: help;
+      transition: background 0.3s, color 0.3s;
+    }
+    .redaction:hover {
+      background: transparent;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>機密規約（完全版）</li>
+    </ul>
+  </nav>
+
+  <div class="classified-hero">
+    <div class="classified-badge">TOP SECRET / LEVEL 3+ ONLY</div>
+    <h1 class="hero-title" style="color: #ff4d4d;">機密規約：完全版</h1>
+    <p class="hero-sub" style="color: #ff4d4d;">本文書の閲覧履歴は直ちに機関本部に送信されます。</p>
+  </div>
+
+  <main class="classified-content">
+    <article class="protocol-card">
+      <div id="accessDenied" style="display: none; text-align: center;">
+        <h2 style="color: #ff4d4d; margin-bottom: 2rem;">ACCESS DENIED</h2>
+        <p>あなたの権限レベルではこの情報を閲覧することはできません。</p>
+        <p class="text-muted" style="margin-top: 1rem;">必要権限レベル: 3以上</p>
+        <div class="cta-row" style="margin-top: 3rem; justify-content: center;">
+          <a href="index.html" class="cta-btn">戻る</a>
+        </div>
+      </div>
+
+      <div id="accessGranted" style="display: none;">
+        <div class="secret-section">
+          <div class="secret-title">第1条：存在の秘匿</div>
+          <p>
+            海蝕機関の存在および活動内容は、いかなる国家、組織、個人に対しても開示してはならない。
+            特に「階底次元」の物理的干渉手法については、<span class="redaction">収束員自身の直系卑属</span>に対しても秘匿が義務付けられる。
+          </p>
+        </div>
+
+        <div class="secret-section">
+          <div class="secret-title">第4条：収束の代償</div>
+          <p>
+            大規模な海蝕現象を収束させる際、物理的な手段が通用しない場合、<span class="redaction">周囲の住民100名分程度の認識</span>を代償として次元を閉鎖することが許可される。
+            この際、対象となった者のアイデンティティは完全に消失するが、機関は一切の責任を負わない。
+          </p>
+        </div>
+
+        <div class="secret-section">
+          <div class="secret-title">第7条：反逆の定義</div>
+          <p>
+            機関の命令に背く、あるいは「境界」の向こう側へ自発的に転移しようと試みる者は、直ちに「海蝕実体」として処理される。
+            その際、<span class="redaction">魂の回収</span>は行われず、永遠に階底次元を漂うこととなる。
+          </p>
+        </div>
+
+        <div class="warning-box" style="border-color: #ff4d4d; color: #ff4d4d;">
+          <p>
+            これより先の内容はレベル5（機関長）以上の権限が必要です。
+            不正なアクセスが検知された場合、端末付近に設置された「収束モジュール」が自動起動します。
+          </p>
+        </div>
+
+        <div class="cta-row" style="margin-top: 3rem; justify-content: center;">
+          <a href="index.html" class="cta-btn" style="border-color: #ff4d4d; color: #ff4d4d;">退出する</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const level = parseInt(sessionStorage.getItem('accessLevel') || '0');
+      if (level >= 3) {
+        document.getElementById('accessGranted').style.display = 'block';
+      } else {
+        document.getElementById('accessDenied').style.display = 'block';
+      }
+    });
+  </script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

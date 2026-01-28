@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日報詳細 | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+  <style>
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    .log-detail-container {
+      max-width: 900px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+    .log-full-card {
+      background: rgba(10, 10, 10, 0.95);
+      border: 1px solid var(--accent);
+      padding: 3rem;
+      position: relative;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .log-full-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .log-full-header {
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .log-full-meta {
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      opacity: 0.8;
+    }
+    .log-full-title {
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    }
+    .log-full-body {
+      line-height: 2;
+      font-size: 1.05rem;
+      white-space: pre-wrap;
+      color: #e0e0e0;
+    }
+    .restricted-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ff4d4d;
+      color: #000;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.75rem;
+      font-family: 'DotGothic16', sans-serif;
+      font-weight: bold;
+      animation: glitch 1s infinite linear alternate-reverse;
+    }
+    .scanline {
+      width: 100%;
+      height: 100px;
+      z-index: 5;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 212, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+      opacity: 0.1;
+      position: absolute;
+      bottom: 100%;
+      animation: scanline 6s linear infinite;
+    }
+    @keyframes scanline {
+      0% { bottom: 100%; }
+      80% { bottom: 100%; }
+      100% { bottom: -100px; }
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>日報詳細</li>
+    </ul>
+  </nav>
+
+  <main class="log-detail-container">
+    <div id="logContent">
+      <p>読み込み中...</p>
+    </div>
+    <div class="cta-row" style="margin-top: 2rem; justify-content: center;">
+      <a href="index.html" class="cta-btn">一覧に戻る</a>
+    </div>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const logId = params.get('id');
+      const container = document.getElementById('logContent');
+
+      if (!logId) {
+        container.innerHTML = '<p>エラー：ログIDが指定されていません。</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch('./deta/logs.json');
+        const logs = await response.json();
+        const log = logs.find(l => l.id.toString() === logId);
+
+        if (!log) {
+          container.innerHTML = '<p>エラー：指定されたログが見つかりませんでした。</p>';
+          return;
+        }
+
+        const userLevel = parseInt(sessionStorage.getItem('accessLevel') || '0');
+        if (log.restricted && userLevel < log.requiredLevel) {
+          container.innerHTML = `
+            <div class="log-full-card" style="border-color: #ff4d4d;">
+              <div class="restricted-badge">ACCESS RESTRICTED</div>
+              <h2 style="color: #ff4d4d;">閲覧権限が不足しています</h2>
+              <p>このログを閲覧するにはレベル ${log.requiredLevel} 以上の権限が必要です。</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <article class="log-full-card">
+            <div class="scanline"></div>
+            ${log.restricted ? '<div class="restricted-badge">RESTRICTED ACCESS</div>' : ''}
+            <div class="log-full-header">
+              <div class="log-full-meta">IDENTIFIER: SEA-${log.id.toString().padStart(4, '0')} // TIMESTAMP: ${log.date}</div>
+              <h1 class="log-full-title">${log.title}</h1>
+            </div>
+            <div class="log-full-body">${log.body}</div>
+          </article>
+        `;
+      } catch (error) {
+        container.innerHTML = '<p>エラー：ログの読み込みに失敗しました。</p>';
+      }
+    });
+  </script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

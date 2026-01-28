@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>海蝕員の日記 | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" herf="./css/logs.css">
+  <link rel="stylesheet" href="./css/search.css">
+<style>
+    .diaries-container {
+      max-width: 800px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+    .diary-entry {
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .diary-entry:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    .diary-header {
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .diary-title {
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+    .diary-meta {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .diary-content {
+      line-height: 1.8;
+      white-space: pre-wrap;
+      font-family: 'Zen Old Mincho', serif;
+    }
+    .diary-author {
+      margin-top: 1rem;
+      text-align: right;
+      font-style: italic;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>海蝕員の日記</li>
+    </ul>
+  </nav>
+
+  <main class="diaries-container">
+    <h2 class="section-title">海蝕員の個人的備忘録</h2>
+    <div id="diariesList">
+      <p>読み込み中...</p>
+    </div>
+  </main>
+
+  <footer></footer>
+
+  <script type="module">
+    import { initMenu } from './js/menu.js';
+    import { initSearch } from './js/search.js';
+    import { loadComponents } from './js/components.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadComponents();
+      
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+      const accessLevel = sessionStorage.getItem('accessLevel') || 0;
+      const userName = sessionStorage.getItem('userName') || 'GUEST';
+
+      if (isLoggedIn) {
+        const levelDisplayContainer = document.getElementById('accessLevelContainer');
+        if (levelDisplayContainer) {
+          levelDisplayContainer.className = 'access-level-display';
+          levelDisplayContainer.innerHTML = `LEVEL: ${accessLevel} [${userName}]`;
+          levelDisplayContainer.style.fontSize = '0.7rem';
+          levelDisplayContainer.style.color = 'var(--accent)';
+          levelDisplayContainer.style.fontFamily = 'DotGothic16, sans-serif';
+        }
+        
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.style.display = 'inline-block';
+          logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+          });
+        }
+      }
+
+      initMenu();
+      initSearch();
+
+      const container = document.getElementById('diariesList');
+      try {
+        const response = await fetch('./deta/diaries.json');
+        const diaries = await response.json();
+        
+        container.innerHTML = diaries.map(entry => `
+          <article class="diary-entry">
+            <div class="diary-header">
+              <h3 class="diary-title">${entry.title}</h3>
+              <span class="diary-meta">${entry.date}</span>
+            </div>
+            <div class="diary-content">${entry.content}</div>
+            <div class="diary-author">記録者：${entry.author}</div>
+          </article>
+        `).join('');
+      } catch (error) {
+        container.innerHTML = '<p>日記の読み込みに失敗しました。</p>';
+      }
+    });
+  </script>
+</body>
+</html>
