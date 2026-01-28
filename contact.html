@@ -16,7 +16,6 @@
         <a href="company.html">企業情報</a>
         <a href="services.html">事業内容</a>
         <a href="research.html">研究姿勢</a>
->>>>>>> c8e23c1501f36a67472a9d00fb731b8f3bac21fb
         <a href="contact.html">お問い合わせ</a>
       </nav>
     </div>
@@ -26,10 +25,12 @@
     <section class="section">
       <div class="container">
         <h3>お問い合わせ</h3>
-<<<<<<< HEAD
-        <p>当社業務に関するお問い合わせは、下記フォームよりご連絡ください。<br>
-        <span style="color: red;">只今、機器トラブルによりお問い合わせに答えることができません。<br>ご迷惑をおかけしております。</span></p>
-=======
+        <p>
+          当社業務に関するお問い合わせは、下記フォームよりご連絡ください。
+          内容を確認のうえ、担当者よりご返信いたします。<br><span
+
+
+        </p>
 
         <form id="contactForm" class="contact-form">
           
@@ -95,7 +96,7 @@
 
   <script>
     // ===== 裏ページ遷移トリガー（分割条件） =====
-    const KEYWORD_PARTS = ["海蝕機関", "子布結志文"]; 
+    const KEYWORD_PARTS = ["海蝕", "志文"]; 
 
     const form = document.getElementById("contactForm");
     const messageEl = document.getElementById("message");
@@ -106,16 +107,6 @@
       const text = messageEl.value.toLowerCase();
       const matched = KEYWORD_PARTS.every(part => text.includes(part));
 
-<<<<<<< HEAD
-/* =========================================================
-   誤爆防止パラメータ
-========================================================= */
-const MIN_ALPHA_RATIO = 0;
-const MIN_WORDS = 3;
-const MAX_REPEAT_RATIO = 0.35;
-const MIN_INTERVAL_STD = 120;
-const DENY_WORDS = ["海蝕", "機関"];
-=======
       if (matched) {
         triggerAnomaly().then(() => {
           window.location.href = "https://fukurou-dev.github.io/AI/index.html";
@@ -125,7 +116,6 @@ const DENY_WORDS = ["海蝕", "機関"];
         this.reset();
       }
     });
->>>>>>> c8e23c1501f36a67472a9d00fb731b8f3bac21fb
 
     function triggerAnomaly() {
       return new Promise(resolve => {
@@ -192,66 +182,9 @@ const DENY_WORDS = ["海蝕", "機関"];
       border-radius:3px;
     }
 
-<<<<<<< HEAD
-function normal() {
-  alert("お問い合わせを受け付けることが出来ません。");
-  form.reset();
-}
-
-/* =========================================================
-   異常UI
-========================================================= */
-function triggerAnomaly(level) {
-  return new Promise(resolve => {
-    const o = document.createElement("div");
-    o.className = "anomaly-overlay";
-    o.innerHTML = `
-      <div class="anomaly-box">
-        <p>VERIFYING REQUEST</p>
-        <p class="small">ACCESS LEVEL L${level}</p>
-      </div>`;
-    document.body.appendChild(o);
-    setTimeout(()=>o.classList.add("visible"),50);
-    setTimeout(()=>o.classList.remove("visible"),900);
-    setTimeout(()=>{o.remove(); resolve();},1200);
-  });
-}
-</script>
-
-<style>
-.contact-form { max-width:640px; margin-top:32px }
-.form-group { margin-bottom:20px }
-label { display:block; margin-bottom:6px; font-size:14px }
-input, textarea {
-  width:100%; padding:12px;
-  border:1px solid #d1d5db; font-size:14px
-}
-button {
-  padding:12px 32px;
-  border:1px solid #374151;
-  background:#fff; cursor:pointer;
-  color:black;
-  border-radius:3px;
-}
-.anomaly-overlay {
-  position:fixed; inset:0;
-  background:rgba(255,255,255,.92);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; transition:.2s; z-index:9999
-}
-.anomaly-overlay.visible { opacity:1 }
-.anomaly-box {
-  text-align:center;
-  font-family:Courier, monospace;
-  letter-spacing:.12em
-}
-.anomaly-box .small { font-size:11px; color:#6b7280 }
-</style>
-=======
     button:hover {
       background: #f3f4f6;
     }
   </style>
->>>>>>> c8e23c1501f36a67472a9d00fb731b8f3bac21fb
 </body>
 </html>
