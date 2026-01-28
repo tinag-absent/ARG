@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>東亜先端研究株式会社 | Toa Advanced Research Inc.</title>
+  <meta name="description" content="東亜先端研究株式会社は、研究支援・技術検証・資料整理を通じて、客観性と再現性を重視した業務を提供します。">
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- 
+  助けて
+  誰か気づいて
+  私はまだここにいる
+  
+  座標: 35.6762, 139.6503
+  日付: 2026-02-14
+  時刻: 23:00
+  
+  暗号: テツキョウ ワ ヒラク ツキ ノ ナイ ヨル ニ
+  (ヒント: 3文字シフト)
+  
+  来て
+  -->
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">Toa Advanced Research Inc.</h1>
+      <nav class="nav">
+        <a href="index.html">ホーム</a>
+        <a href="company.html">企業情報</a>
+        <a href="services.html">事業内容</a>
+        <a href="research.html">研究姿勢</a>
+        <a href="contact.html">お問い合わせ</a>
+        <!-- Hidden link to internal portal -->
+        <a href="/internal/" style="display:none;">内部</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <h2>Research Support with Neutrality</h2>
+        <p class="lead">
+          客観性・再現性・記録性を重視した研究支援と技術検証。
+          私たちは成果ではなく、過程の信頼性を支えます。
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <h3>私たちについて</h3>
+        <p>
+          東亜先端研究株式会社は、研究活動や技術検証を行う組織・個人に対し、
+          調査・整理・評価といった支援業務を提供しています。
+          特定分野に依存しない柔軟な体制を特徴とし、
+          依頼元の目的に応じた中立的な立場を維持します。
+        </p>
+        <a class="link" href="company.html">企業情報を見る</a>
+      </div>
+    </section>
+
+    <!-- SERVICES SUMMARY -->
+    <section class="section alt" id="services">
+      <div class="container">
+        <h3>事業内容</h3>
+        <div class="cards">
+          <div class="card">
+            <h4>研究支援</h4>
+            <p>
+              研究計画の整理、検証手順の構築、記録方法の設計など、
+              研究活動を支える補助業務を行います。
+            </p>
+          </div>
+          <div class="card">
+            <h4>技術検証</h4>
+            <p>
+              新規性の高い技術や手法について、
+              段階的かつ検証可能な形での評価を支援します。
+            </p>
+          </div>
+          <div class="card">
+            <h4>資料整理・分析</h4>
+            <p>
+              研究資料や記録の整理、分析、第三者確認を前提とした形式化を行います。
+            </p>
+          </div>
+        </div>
+        <a class="link" href="services.html">事業内容の詳細</a>
+      </div>
+    </section>
+
+    <!-- RESEARCH POLICY SUMMARY -->
+    <section class="section" id="research">
+      <div class="container">
+        <h3>研究姿勢</h3>
+        <p>
+          当社は中立性と再現性を重視し、
+          研究や検証の過程が第三者にとっても理解可能であることを重要視しています。
+          情報管理と守秘を前提とした、慎重な運用を行います。
+        </p>
+        <a class="link" href="research.html">研究姿勢について</a>
+      </div>
+    </section>
+
+    <!-- CONTACT CTA -->
+    <section class="section alt">
+      <div class="container">
+        <h3>お問い合わせ</h3>
+        <p>
+          業務内容に関するご質問やご相談は、
+          お問い合わせページよりご連絡ください。
+        </p>
+        <a class="button" href="contact.html">お問い合わせフォームへ</a>
+      </div>
+    </section>
+    
+    <!-- Hidden puzzle clue -->
+    <div id="hidden-data" style="display:none;" data-cipher="Ymx1ZSBtb29uIHJpc2VzIG9uIEZlYnJ1YXJ5IDE0dGg=">
+      <!-- Base64 encoded: "blue moon rises on February 14th" -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>このサイトはフィクションです。実在する人物・団体・事件・土地・施設・海蝕現象とは関係がありません。<br>
+        © 志文-- All Rights Reserved.</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Easter egg: Console message
+    console.log("%c海蝕機関", "color: #00ffff; font-size: 24px; font-weight: bold;");
+    console.log("%c真実を知りたいか？", "color: #00ffff; font-size: 16px;");
+    console.log("%c/internal/truth.html を訪れてみろ", "color: #00ffff; font-size: 14px;");
+    console.log("%cパスワードは「境界」だ", "color: #888; font-size: 12px;");
+    
+    // Hidden key listener for Konami code
+    let konamiCode = [];
+    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.key);
+      konamiCode = konamiCode.slice(-10);
+      
+      if (konamiCode.join('') === konamiSequence.join('')) {
+        window.location.href = '/internal/classified.html';
+      }
+    });
+    
+    // Click counter easter egg
+    let clickCount = 0;
+    document.querySelector('.logo').addEventListener('click', (e) => {
+      clickCount++;
+      if (clickCount === 7) {
+        alert('座標 35.6762, 139.6503 を調べてみろ');
+        clickCount = 0;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日報検索 | 海蝕機関</title>
+  <link rel="icon" href="https://i.ibb.co/nsLNNwPw/favicon-ico.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Old+Mincho&display=swap">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="./css/search.css">
+  
+  <style>
+    .search-page {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    
+    .search-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-alpha);
+      border-radius: 4px;
+    }
+    
+    .search-header h1 {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    
+    .search-container {
+      background: var(--bg-card);
+      padding: 2rem;
+      border: 1px solid var(--accent-alpha);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+    }
+    
+    .search-form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      font-family: 'DotGothic16', sans-serif;
+      font-size: 0.9rem;
+    }
+    
+    .search-form-group input,
+    .search-form-group select {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--accent-alpha);
+      color: var(--text);
+      font-family: 'Zen Old Mincho', serif;
+      border-radius: 4px;
+    }
+    
+    .search-form-group input:focus,
+    .search-form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+    
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 0.8rem 2rem;
+      background: var(--accent);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 4px;
+      font-family: 'DotGothic16', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background: var(--text);
+      box-shadow: 0 0 15px var(--accent);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--accent-alpha);
+    }
+    
+    .view-toggle {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    
+    .view-toggle button {
+      padding: 0.5rem 1.5rem;
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      font-family: 'DotGothic16', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .view-toggle button.active {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+    
+    .results-container {
+      margin-top: 2rem;
+    }
+    
+    .log-card {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-alpha);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .log-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+    
+    .log-card.restricted {
+      opacity: 0.6;
+      cursor: not-allowed;
+      border-color: #ff4d4d;
+    }
+    
+    .log-header {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .log-date {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+    
+    .division-badge {
+      padding: 0.2rem 0.8rem;
+      background: rgba(0, 255, 255, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-family: 'DotGothic16', sans-serif;
+    }
+    
+    .threat-badge {
+      padding: 0.2rem 0.8rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-family: 'DotGothic16', sans-serif;
+    }
+    
+    .threat-low { background: rgba(0, 255, 0, 0.2); border: 1px solid #0f0; color: #0f0; }
+    .threat-medium { background: rgba(255, 255, 0, 0.2); border: 1px solid #ff0; color: #ff0; }
+    .threat-high { background: rgba(255, 128, 0, 0.2); border: 1px solid #ff8000; color: #ff8000; }
+    .threat-critical { background: rgba(255, 0, 0, 0.2); border: 1px solid #f00; color: #f00; }
+    .threat-unknown { background: rgba(128, 128, 128, 0.2); border: 1px solid #888; color: #888; }
+    
+    .log-title {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .log-excerpt {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .view-detail-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: 'DotGothic16', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .view-detail-btn:hover {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+    
+    .restriction-notice {
+      background: rgba(255, 77, 77, 0.1);
+      border: 1px solid #ff4d4d;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-top: 1rem;
+    }
+    
+    .restriction-notice p {
+      color: #ff4d4d;
+      margin: 0.5rem 0;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-alpha);
+      border-radius: 4px;
+    }
+    
+    .search-results-count {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-alpha);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--accent);
+    }
+    
+    /* Timeline styles */
+    .timeline-container {
+      position: relative;
+      padding: 2rem 0;
+    }
+    
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 50%;
+    }
+    
+    .timeline-item.right {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: 50%;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      border: 2px solid var(--bg-dark);
+    }
+    
+    .timeline-content {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-alpha);
+      padding: 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      max-width: 400px;
+      margin-right: 2rem;
+    }
+    
+    .timeline-item.right .timeline-content {
+      margin-right: 0;
+      margin-left: 2rem;
+    }
+    
+    .timeline-content:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+    
+    .timeline-date {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .timeline-title {
+      font-family: 'DotGothic16', sans-serif;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .timeline-division {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    
+    .timeline-threat {
+      font-size: 0.8rem;
+      font-family: 'DotGothic16', sans-serif;
+    }
+    
+    #listView, #timelineView {
+      display: none;
+    }
+    
+    #listView.active, #timelineView.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .timeline-container::before {
+        left: 20px;
+      }
+      
+      .timeline-item,
+      .timeline-item.right {
+        padding-left: 60px;
+        padding-right: 0;
+      }
+      
+      .timeline-marker {
+        left: 20px;
+      }
+      
+      .timeline-content,
+      .timeline-item.right .timeline-content {
+        margin: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+  
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ul>
+      <li><a href="index.html">ポータル</a></li>
+      <li>日報検索</li>
+    </ul>
+  </nav>
+  
+  <div class="search-page">
+    <div class="search-header">
+      <h1>日報検索システム</h1>
+      <p class="text-muted">海蝕現象の記録を検索・閲覧できます</p>
+    </div>
+    
+    <div class="search-container">
+      <form id="searchForm">
+        <div class="search-form-group">
+          <label for="searchInput">検索キーワード</label>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="日付、事案名、キーワードで検索..."
+            autocomplete="off"
+          >
+        </div>
+        
+        <div class="filter-grid">
+          <div class="search-form-group">
+            <label for="divisionFilter">部門</label>
+            <select id="divisionFilter">
+              <option value="">全ての部門</option>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          
+          <div class="search-form-group">
+            <label for="threatLevelFilter">脅威レベル</label>
+            <select id="threatLevelFilter">
+              <option value="0">全てのレベル</option>
+              <option value="1">レベル1（低）</option>
+              <option value="2">レベル2（中）</option>
+              <option value="3">レベル3（高）</option>
+              <option value="4">レベル4（極高）</option>
+              <option value="5">レベル5（最高）</option>
+            </select>
+          </div>
+          
+          <div class="search-form-group">
+            <label for="dateFromFilter">開始日</label>
+            <input type="date" id="dateFromFilter">
+          </div>
+          
+          <div class="search-form-group">
+            <label for="dateToFilter">終了日</label>
+            <input type="date" id="dateToFilter">
+          </div>
+        </div>
+        
+        <div class="search-form-group">
+          <label for="sortOrder">並び順</label>
+          <select id="sortOrder">
+            <option value="date-desc">日付（新しい順）</option>
+            <option value="date-asc">日付（古い順）</option>
+            <option value="threat-desc">脅威度（高い順）</option>
+            <option value="threat-asc">脅威度（低い順）</option>
+          </select>
+        </div>
+        
+        <div class="search-actions">
+          <button type="submit" class="btn">検索実行</button>
+          <button type="button" class="btn btn-secondary" onclick="resetFilters()">フィルターをリセット</button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="view-toggle">
+      <button id="listViewBtn" class="active">リスト表示</button>
+      <button id="timelineViewBtn">タイムライン表示</button>
+    </div>
+    
+    <div id="listView" class="results-container active"></div>
+    <div id="timelineView" class="results-container"></div>
+  </div>
+  
+  <footer></footer>
+  
+  <script type="module">
+    import { initSearch, initTimeline } from './js/search_enhanced.js';
+    import { loadComponents } from './js/components.js';
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadComponents();
+      
+      // Check login
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+      if (!isLoggedIn) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Initialize search and timeline
+      initSearch();
+      initTimeline();
+      
+      // View toggle
+      const listViewBtn = document.getElementById('listViewBtn');
+      const timelineViewBtn = document.getElementById('timelineViewBtn');
+      const listView = document.getElementById('listView');
+      const timelineView = document.getElementById('timelineView');
+      
+      listViewBtn.addEventListener('click', () => {
+        listViewBtn.classList.add('active');
+        timelineViewBtn.classList.remove('active');
+        listView.classList.add('active');
+        timelineView.classList.remove('active');
+      });
+      
+      timelineViewBtn.addEventListener('click', () => {
+        timelineViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        timelineView.classList.add('active');
+        listView.classList.remove('active');
+      });
+    });
+    
+    // Reset filters function
+    window.resetFilters = function() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('divisionFilter').value = '';
+      document.getElementById('threatLevelFilter').value = '0';
+      document.getElementById('dateFromFilter').value = '';
+      document.getElementById('dateToFilter').value = '';
+      document.getElementById('sortOrder').value = 'date-desc';
+    };
+  </script>
+</body>
+</html>
