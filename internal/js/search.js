@@ -1,318 +1,159 @@
-// Enhanced search functionality with advanced filters
-// 拡張された検索機能 - 複数フィルター、タイムライン表示対応
+// search_enhanced.js
+// 検索・フィルタ・タイムライン統合版（DOM整合・安全化済）
 
 export function initSearch() {
   const searchForm = document.getElementById('searchForm');
   const searchInput = document.getElementById('searchInput');
-  const searchModal = document.getElementById('searchModal');
-  const closeModal = document.getElementById('closeModal');
-  const modalResults = document.getElementById('modalResults');
-  
-  // Advanced filter elements
+
   const divisionFilter = document.getElementById('divisionFilter');
   const threatLevelFilter = document.getElementById('threatLevelFilter');
   const dateFromFilter = document.getElementById('dateFromFilter');
   const dateToFilter = document.getElementById('dateToFilter');
   const sortOrder = document.getElementById('sortOrder');
-  
-  if (!searchForm || !searchInput) return;
 
-  // Load logs data
+  const listView = document.getElementById('listView');
+
+  if (!searchForm || !listView) return;
+
   let logsData = [];
-  
-  async function loadLogs() {
-    try {
-      const response = await fetch('./deta/logs.json');
-      logsData = await response.json();
-      
-      // Initialize filters after data is loaded
-      if (divisionFilter) {
-        populateDivisionFilter();
-      }
-    } catch (error) {
-      console.error('Failed to load logs:', error);
-      showError('データの読み込みに失敗しました');
-    }
-  }
 
-  // Populate division filter with unique divisions
-  function populateDivisionFilter() {
-    const divisions = [...new Set(logsData.map(log => log.division).filter(Boolean))];
-    divisions.forEach(division => {
-      const option = document.createElement('option');
-      option.value = division;
-      option.textContent = division;
-      divisionFilter.appendChild(option);
-    });
-  }
+  /* ---------- utils ---------- */
 
-  // Enhanced search function
-  function performSearch(query) {
-    const searchTerm = query.toLowerCase();
-    
-    // Get filter values
-    const selectedDivision = divisionFilter ? divisionFilter.value : '';
-    const selectedThreatLevel = threatLevelFilter ? parseInt(threatLevelFilter.value) : 0;
-    const dateFrom = dateFromFilter ? new Date(dateFromFilter.value) : null;
-    const dateTo = dateToFilter ? new Date(dateToFilter.value) : null;
-    const sort = sortOrder ? sortOrder.value : 'date-desc';
-    
-    // Get current user's access level
-    const accessLevel = parseInt(sessionStorage.getItem('accessLevel') || '1');
-    
-    // Filter logs
-    let results = logsData.filter(log => {
-      // Check access level
-      if (log.restricted && log.requiredLevel > accessLevel) {
-        return false;
-      }
-      
-      // Check search term
-      const matchesSearch = !searchTerm || 
-        log.id.toLowerCase().includes(searchTerm) ||
-        log.title.toLowerCase().includes(searchTerm) ||
-        log.body.toLowerCase().includes(searchTerm) ||
-        log.date.includes(searchTerm);
-      
-      if (!matchesSearch) return false;
-      
-      // Check division filter
-      if (selectedDivision && log.division !== selectedDivision) {
-        return false;
-      }
-      
-      // Check threat level filter
-      if (selectedThreatLevel > 0 && log.threatLevel !== selectedThreatLevel) {
-        return false;
-      }
-      
-      // Check date range
-      if (dateFrom || dateTo) {
-        const logDate = new Date(log.date);
-        if (dateFrom && logDate < dateFrom) return false;
-        if (dateTo && logDate > dateTo) return false;
-      }
-      
-      return true;
-    });
-    
-    // Sort results
-    results = sortResults(results, sort);
-    
-    return results;
-  }
+  const escapeHTML = (str = '') =>
+    str.replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
 
-  // Sort function
-  function sortResults(results, sortType) {
-    switch(sortType) {
-      case 'date-desc':
-        return results.sort((a, b) => new Date(b.date) - new Date(a.date));
-      case 'date-asc':
-        return results.sort((a, b) => new Date(a.date) - new Date(b.date));
-      case 'threat-desc':
-        return results.sort((a, b) => (b.threatLevel || 0) - (a.threatLevel || 0));
-      case 'threat-asc':
-        return results.sort((a, b) => (a.threatLevel || 0) - (b.threatLevel || 0));
-      default:
-        return results;
-    }
-  }
-
-  // Display results
-  function displayResults(results) {
-    if (results.length === 0) {
-      modalResults.innerHTML = `
-        <div class="no-results">
-          <p>該当する記録が見つかりませんでした。</p>
-          <p class="text-muted">検索条件を変更して再度お試しください。</p>
-        </div>
-      `;
-      return;
-    }
-
-    const accessLevel = parseInt(sessionStorage.getItem('accessLevel') || '1');
-    
-    let html = `<div class="search-results-count">
-      検索結果: ${results.length}件
-    </div>`;
-    
-    results.forEach(log => {
-      const isRestricted = log.restricted && log.requiredLevel > accessLevel;
-      const threatClass = getThreatLevelClass(log.threatLevel);
-      
-      if (isRestricted) {
-        html += `
-          <div class="log-card restricted">
-            <div class="log-header">
-              <span class="log-date">${log.date}</span>
-              <span class="threat-badge ${threatClass}">
-                脅威度: ${log.threatLevel || 'N/A'}
-              </span>
-            </div>
-            <h3 class="log-title">[機密] ${log.title}</h3>
-            <div class="restriction-notice">
-              <p>⚠️ この記録は権限レベル${log.requiredLevel}以上の海蝕員のみ閲覧可能です。</p>
-              <p class="text-muted">あなたの現在の権限: レベル${accessLevel}</p>
-            </div>
-          </div>
-        `;
-      } else {
-        html += `
-          <div class="log-card" onclick="viewLogDetail('${log.id}')">
-            <div class="log-header">
-              <span class="log-date">${log.date}</span>
-              ${log.division ? `<span class="division-badge">${log.division}</span>` : ''}
-              <span class="threat-badge ${threatClass}">
-                脅威度: ${log.threatLevel || 'N/A'}
-              </span>
-            </div>
-            <h3 class="log-title">${log.title}</h3>
-            <p class="log-excerpt">${getExcerpt(log.body)}</p>
-            <button class="view-detail-btn">詳細を表示 →</button>
-          </div>
-        `;
-      }
-    });
-    
-    modalResults.innerHTML = html;
-  }
-
-  // Get threat level CSS class
-  function getThreatLevelClass(level) {
-    if (!level) return 'threat-unknown';
-    if (level === 1) return 'threat-low';
-    if (level === 2) return 'threat-medium';
-    if (level === 3) return 'threat-high';
-    if (level >= 4) return 'threat-critical';
-    return 'threat-unknown';
-  }
-
-  // Get excerpt from body
-  function getExcerpt(text, maxLength = 150) {
-    if (!text) return '';
-    const cleaned = text.replace(/\n/g, ' ').trim();
-    if (cleaned.length <= maxLength) return cleaned;
-    return cleaned.substring(0, maxLength) + '...';
-  }
-
-  // Show error message
-  function showError(message) {
-    modalResults.innerHTML = `
-      <div class="error-message">
-        <p>⚠️ ${message}</p>
-      </div>
-    `;
-  }
-
-  // View log detail (navigate to detail page)
-  window.viewLogDetail = function(logId) {
-    window.location.href = `log-detail.html?id=${logId}`;
+  const getThreatClass = lvl => {
+    if (!lvl) return 'threat-unknown';
+    if (lvl === 1) return 'threat-low';
+    if (lvl === 2) return 'threat-medium';
+    if (lvl === 3) return 'threat-high';
+    return 'threat-critical';
   };
 
-  // Event listeners
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const query = searchInput.value.trim();
-    
-    if (query.length < 2 && !divisionFilter?.value && !threatLevelFilter?.value) {
-      showError('検索キーワードを2文字以上入力するか、フィルターを選択してください。');
-      searchModal.style.display = 'block';
+  /* ---------- load ---------- */
+
+  async function loadLogs() {
+    const res = await fetch('./deta/logs.json');
+    logsData = await res.json();
+    populateDivisions();
+  }
+
+  function populateDivisions() {
+    if (!divisionFilter) return;
+    [...new Set(logsData.map(l => l.division).filter(Boolean))]
+      .forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        divisionFilter.appendChild(opt);
+      });
+  }
+
+  /* ---------- search ---------- */
+
+  function searchLogs(query) {
+    const q = query.toLowerCase();
+    const access = Number(sessionStorage.getItem('accessLevel') || 1);
+
+    return logsData.filter(log => {
+      if (log.restricted && log.requiredLevel > access) return false;
+
+      if (q && !(
+        log.id?.toLowerCase().includes(q) ||
+        log.title?.toLowerCase().includes(q) ||
+        log.body?.toLowerCase().includes(q) ||
+        log.date?.includes(q)
+      )) return false;
+
+      if (divisionFilter?.value && log.division !== divisionFilter.value) return false;
+      if (threatLevelFilter?.value > 0 && log.threatLevel !== Number(threatLevelFilter.value)) return false;
+
+      const d = new Date(log.date);
+      if (dateFromFilter?.value && d < new Date(dateFromFilter.value)) return false;
+      if (dateToFilter?.value && d > new Date(dateToFilter.value)) return false;
+
+      return true;
+    });
+  }
+
+  function sortLogs(logs) {
+    switch (sortOrder.value) {
+      case 'date-asc': return logs.sort((a,b)=>new Date(a.date)-new Date(b.date));
+      case 'threat-desc': return logs.sort((a,b)=>(b.threatLevel||0)-(a.threatLevel||0));
+      case 'threat-asc': return logs.sort((a,b)=>(a.threatLevel||0)-(b.threatLevel||0));
+      default: return logs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    }
+  }
+
+  function renderList(logs) {
+    if (!logs.length) {
+      listView.innerHTML = `<div class="no-results">該当記録なし</div>`;
       return;
     }
-    
-    const results = performSearch(query);
-    displayResults(results);
-    searchModal.style.display = 'block';
+
+    listView.innerHTML =
+      `<div class="search-results-count">${logs.length} 件</div>` +
+      logs.map(log => `
+        <div class="log-card" data-id="${log.id}">
+          <div class="log-header">
+            <span class="log-date">${log.date}</span>
+            ${log.division ? `<span class="division-badge">${escapeHTML(log.division)}</span>` : ''}
+            <span class="threat-badge ${getThreatClass(log.threatLevel)}">
+              脅威度: ${log.threatLevel ?? 'N/A'}
+            </span>
+          </div>
+          <h3 class="log-title">${escapeHTML(log.title)}</h3>
+          <p class="log-excerpt">${escapeHTML(log.body?.slice(0,150))}...</p>
+          <button class="view-detail-btn">詳細</button>
+        </div>
+      `).join('');
+  }
+
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const results = sortLogs(searchLogs(searchInput.value.trim()));
+    renderList(results);
   });
 
-  // Filter change listeners
-  [divisionFilter, threatLevelFilter, dateFromFilter, dateToFilter, sortOrder].forEach(filter => {
-    if (filter) {
-      filter.addEventListener('change', () => {
-        const query = searchInput.value.trim();
-        const results = performSearch(query);
-        displayResults(results);
-      });
-    }
+  [divisionFilter, threatLevelFilter, dateFromFilter, dateToFilter, sortOrder]
+    .forEach(f => f?.addEventListener('change', () => {
+      renderList(sortLogs(searchLogs(searchInput.value.trim())));
+    }));
+
+  listView.addEventListener('click', e => {
+    const card = e.target.closest('.log-card');
+    if (card) location.href = `log-detail.html?id=${encodeURIComponent(card.dataset.id)}`;
   });
 
-  closeModal?.addEventListener('click', () => {
-    searchModal.style.display = 'none';
-  });
-
-  // Close modal on outside click
-  window.addEventListener('click', (e) => {
-    if (e.target === searchModal) {
-      searchModal.style.display = 'none';
-    }
-  });
-
-  // Initialize
   loadLogs();
 }
 
-// Timeline view function
+/* ---------- timeline ---------- */
+
 export function initTimeline() {
-  const timelineContainer = document.getElementById('timeline');
-  if (!timelineContainer) return;
+  const timelineView = document.getElementById('timelineView');
+  if (!timelineView) return;
 
-  async function loadTimeline() {
-    try {
-      const response = await fetch('./deta/logs.json');
-      const logs = await response.json();
-      
-      const accessLevel = parseInt(sessionStorage.getItem('accessLevel') || '1');
-      
-      // Filter by access and sort by date
-      const visibleLogs = logs
-        .filter(log => !log.restricted || log.requiredLevel <= accessLevel)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-      
-      renderTimeline(visibleLogs);
-    } catch (error) {
-      console.error('Failed to load timeline:', error);
-    }
-  }
-
-  function renderTimeline(logs) {
-    let html = '<div class="timeline-container">';
-    
-    logs.forEach((log, index) => {
-      const threatClass = getThreatLevelClass(log.threatLevel);
-      const side = index % 2 === 0 ? 'left' : 'right';
-      
-      html += `
-        <div class="timeline-item ${side}">
-          <div class="timeline-marker ${threatClass}"></div>
-          <div class="timeline-content" onclick="viewLogDetail('${log.id}')">
-            <div class="timeline-date">${log.date}</div>
-            <h4 class="timeline-title">${log.title}</h4>
-            ${log.division ? `<div class="timeline-division">${log.division}</div>` : ''}
-            <div class="timeline-threat">脅威度: ${log.threatLevel || 'N/A'}</div>
-          </div>
-        </div>
-      `;
+  fetch('./deta/logs.json')
+    .then(r => r.json())
+    .then(logs => {
+      const access = Number(sessionStorage.getItem('accessLevel') || 1);
+      timelineView.innerHTML =
+        `<div class="timeline-container">` +
+        logs
+          .filter(l => !l.restricted || l.requiredLevel <= access)
+          .sort((a,b)=>new Date(b.date)-new Date(a.date))
+          .map((l,i)=>`
+            <div class="timeline-item ${i%2?'right':'left'}">
+              <div class="timeline-marker ${getThreatClass(l.threatLevel)}"></div>
+              <div class="timeline-content" onclick="location.href='log-detail.html?id=${l.id}'">
+                <div class="timeline-date">${l.date}</div>
+                <h4>${escapeHTML(l.title)}</h4>
+              </div>
+            </div>
+          `).join('') +
+        `</div>`;
     });
-    
-    html += '</div>';
-    timelineContainer.innerHTML = html;
-  }
-
-  function getThreatLevelClass(level) {
-    if (!level) return 'threat-unknown';
-    if (level === 1) return 'threat-low';
-    if (level === 2) return 'threat-medium';
-    if (level === 3) return 'threat-high';
-    if (level >= 4) return 'threat-critical';
-    return 'threat-unknown';
-  }
-
-  window.viewLogDetail = function(logId) {
-    window.location.href = `log-detail.html?id=${logId}`;
-  };
-
-  loadTimeline();
 }
-
-// Export functions
-export default { initSearch, initTimeline };
