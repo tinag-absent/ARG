@@ -2,19 +2,9 @@ import { initMenu } from './menu.js';
 import { initSearch } from './search.js';
 import { loadComponents } from './components.js';
 // 閲覧回数の記録
-let visitCount = localStorage.getItem('kaishoku_visit') || 0;
-visitCount = parseInt(visitCount) + 1;
-localStorage.setItem('kaishoku_visit', visitCount);
-
-// 段階に応じたクラス付与
-const body = document.body;
-if (visitCount >= 2) body.classList.add('erosion-stage-1');
-if (visitCount >= 3) body.classList.add('erosion-stage-2');
-if (visitCount >= 4) body.classList.add('erosion-stage-3');
-if (visitCount >= 5) {
     body.classList.add('corrupted');
     console.warn("警告: 海蝕率が許容値を超えました。直ちに退避してください。");
-}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   // コンポーネントの読み込み
