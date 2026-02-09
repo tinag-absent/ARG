@@ -2,6 +2,7 @@ import { initMenu } from './menu.js';
 import { initSearch } from './search.js';
 import { loadComponents } from './components.js';
 // 閲覧回数の記録
+const body = document.body;
     body.classList.add('corrupted');
     console.warn("警告: 海蝕率が許容値を超えました。直ちに退避してください。");
 
