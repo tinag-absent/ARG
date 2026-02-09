@@ -6,6 +6,44 @@
 --text-main:#e5e7eb;
 --text-muted:#9ca3af;
 }
+/* 5回目：致命的な崩壊 */
+body.corrupted {
+    background-color: #050000;
+    overflow-x: hidden;
+}
+
+body.corrupted * {
+    /* ランダムな方向に要素を歪ませる */
+    transform: skew(calc(Math.random() * 10deg)) rotate(0.5deg);
+    filter: blur(1.5px) contrast(200%) sepia(100%) hue-rotate(320deg);
+    pointer-events: none; /* 操作不能 */
+    user-select: none;
+}
+
+/* 文字を「不根（ふね）」のように化けさせる */
+body.corrupted h1, body.corrupted p, body.corrupted .dept-name {
+    font-family: serif;
+    color: transparent;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+    letter-spacing: -5px;
+}
+
+/* 画面全体にノイズを走らせる */
+body.corrupted::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+    z-index: 9999;
+    animation: flicker 0.1s infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.9; }
+}
 
 *{
 box-sizing:border-box;
